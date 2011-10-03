@@ -12,7 +12,7 @@ Supports custom-scoped CSS output.
 
 ## Usage
 
-Requires node.js (build using 0.4.11)
+Requires node.js (developed using 0.4.11)
 
 `node src/build-themes.js [--version version] [--scope scope]`
 

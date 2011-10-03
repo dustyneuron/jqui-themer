@@ -45,7 +45,7 @@
         
         fs.writeFileSync('/tmp/output', output);
         
-        if (typeof scope !== 'undefined') {
+        if (parsedArgs.hasOwnProperty('scope')) {
             var tree = csswrangler.parse(output);
             
             var selector = new csswrangler.Selector(parsedArgs.scope);
