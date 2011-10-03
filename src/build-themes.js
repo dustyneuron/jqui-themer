@@ -183,32 +183,38 @@
         var results = qsToJSON(qs);
         var themeName = results.themeName;
         
+        var outputDirForTheme = outputDir;
+        if (parsedArgs.hasOwnProperty('scope')) {
+            outputDirForTheme += parsedArgs.scope.replace(/[\.#]/g, '') + '-';
+        }
+        outputDirForTheme += themeName + '/';
+
         try {
-            fs.mkdirSync(outputDir + themeName, 0755);
+            fs.mkdirSync(outputDirForTheme, 0755);
         } catch (e) {
         }
 
-        //fs.writeFileSync(outputDir + themeName + '/data.json', results.json, 'utf8');
-        //console.log(outputDir + themeName + '/data.json');
+        //fs.writeFileSync(outputDirForTheme + 'data.json', results.json, 'utf8');
+        //console.log(outputDirForTheme + 'data.json');
         
         var templateData = prepareTemplateData(results.obj);
         
         var baseThemesDir = jquiDir + 'themes/base/';
         var templateFile = baseThemesDir + 'jquery.ui.theme.css';
-        
+                
         try {
-            fs.mkdirSync(outputDir + themeName + '/images', 0755);
+            fs.mkdirSync(outputDirForTheme + 'images', 0755);
         } catch (e) {
         }
-        copyImages(imagesDir, outputDir + themeName + '/images/', templateData.images);
+        copyImages(imagesDir, outputDirForTheme + 'images/', templateData.images);
         
         var themeCss = renderTemplate(templateFile, templateData.data, defaultsFile);
         themeCss = themeCss.replace('http://jqueryui.com/themeroller/', 'http://jqueryui.com/themeroller/?' + qs);
         
         var finalCss = createFinalCss(baseThemesDir, themeCss, parsedArgs);
         
-        fs.writeFileSync(outputDir + themeName + '/jquery-ui-' + parsedArgs.version + '.custom.css', finalCss, 'utf8');
-        console.log(outputDir + themeName + '/jquery-ui-' + parsedArgs.version + '.custom.css');
+        fs.writeFileSync(outputDirForTheme + 'jquery-ui-' + parsedArgs.version + '.custom.css', finalCss, 'utf8');
+        console.log(outputDirForTheme + 'jquery-ui-' + parsedArgs.version + '.custom.css');
     }
 
     function buildDefaultThemes(parsedArgs) {
