@@ -19,7 +19,7 @@
         return (val.length === 6) && (/^[a-fA-F0-9]+$/.test(val));
     }
     
-    function createFinalCss(baseThemesDir, themeCss, scope) {
+    function createFinalCss(baseThemesDir, themeCss, parsedArgs) {
         
         var exclude = ['jquery.ui.core.css', 'jquery.ui.theme.css', 'images', 'jquery.ui.all.css', 'jquery.ui.base.css'];
         
@@ -48,7 +48,7 @@
         if (typeof scope !== 'undefined') {
             var tree = csswrangler.parse(output);
             
-            var selector = new csswrangler.Selector(scope);
+            var selector = new csswrangler.Selector(parsedArgs.scope);
             
             tree.findAll('whole_selector').forEach(function (whole_selector) {
                 whole_selector.insertAfterSelectors(['*', 'html', 'body'], selector);
@@ -57,7 +57,7 @@
             output = tree.print();
         }
         
-        return output;
+        return output.replace(/@VERSION/g, parsedArgs.version);
     }
     
     function createImg(filename, images) {
@@ -203,8 +203,9 @@
         copyImages(imagesDir, outputDir + themeName + '/images/', templateData.images);
         
         var themeCss = renderTemplate(templateFile, templateData.data, defaultsFile);
+        themeCss = themeCss.replace('http://jqueryui.com/themeroller/', 'http://jqueryui.com/themeroller/?' + qs);
         
-        var finalCss = createFinalCss(baseThemesDir, themeCss, parsedArgs.scope);
+        var finalCss = createFinalCss(baseThemesDir, themeCss, parsedArgs);
         
         fs.writeFileSync(outputDir + themeName + '/jquery-ui-' + parsedArgs.version + '.custom.css', finalCss, 'utf8');
         console.log(outputDir + themeName + '/jquery-ui-' + parsedArgs.version + '.custom.css');
