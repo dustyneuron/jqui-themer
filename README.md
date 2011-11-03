@@ -18,11 +18,11 @@ Requires node.js (developed using 0.4.11)
 
 This builds all the standard themes, and puts them in `output-dir` (current dir by default).
 
-With node in ypur path, use directly, e.g.:
+With node in your path, use directly, e.g.:
 
 `src/build-themes.js --version 1.8.16 --scope .my-class --outdir /tmp/foobar/`
 
 ## License
 
-Dual-licensed, choose MIT or GPLv2.
+Dual-licensed, choose MIT or GPLv2, for compatibility with jQuery UI.
 
