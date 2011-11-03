@@ -54,6 +54,9 @@
             
             output = tree.print();
         }
+        else {
+            output = csswrangler.parse(output).print();
+        }
         
         return output.replace(/@VERSION/g, parsedArgs.version);
     }

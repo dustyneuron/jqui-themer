@@ -322,12 +322,12 @@ float
 
 string1
   = '"' chars:([^\n\r\f\\"] / "\\" nl:nl { return nl } / escape)* '"' {
-      return chars.join("");
+      return '"' + chars.join("") + '"';
     }
 
 string2
   = "'" chars:([^\n\r\f\\'] / "\\" nl:nl { return nl } / escape)* "'" {
-      return chars.join("");
+      return "'" + chars.join("") + "'";
     }
 
 comment
