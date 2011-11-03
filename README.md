@@ -14,9 +14,13 @@ Supports custom-scoped CSS output.
 
 Requires node.js (developed using 0.4.11)
 
-`node src/build-themes.js [--version version] [--scope scope]`
+`node src/build-themes.js [--version version] [--scope scope] [--outdir output-dir]`
 
-This builds all the standard themes, and puts them in `output`.
+This builds all the standard themes, and puts them in `output-dir` (current dir by default).
+
+With node in ypur path, use directly, e.g.:
+
+`src/build-themes.js --version 1.8.16 --scope .my-class --outdir /tmp/foobar/`
 
 ## License
 
