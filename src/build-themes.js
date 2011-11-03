@@ -8,8 +8,6 @@
     var defaultsFile = srcDir + '../data/defaults.json';
     var imagesDir = srcDir + '../data/images/';
     var versionsDir = srcDir + '../data/jquery-ui/';
-    
-    var outputDir = srcDir + '../output/';
 
     var csswrangler = require(srcDir + 'csswrangler/csswrangler.js');
     var qsToJSON = require(srcDir + 'qs-to-json.js').qsToJSON;
@@ -183,7 +181,7 @@
         var results = qsToJSON(qs);
         var themeName = results.themeName;
         
-        var outputDirForTheme = outputDir;
+        var outputDirForTheme = parsedArgs.outDir;
         if (parsedArgs.hasOwnProperty('scope')) {
             outputDirForTheme += parsedArgs.scope.replace(/[\.#]/g, '') + '-';
         }
@@ -220,7 +218,7 @@
     function buildDefaultThemes(parsedArgs) {
     
         try {
-            fs.mkdirSync(outputDir, 0755);
+            fs.mkdirSync(parsedArgs.outDir, 0755);
         } catch (e) {
         }
         
@@ -235,12 +233,13 @@
         
     var scriptName = require('path').basename(process.argv[1]);
     var usage = 'Usage:\n' +
-        '\t' + scriptName + ' [--version version] [--scope css-scope]\n';
+        '\t' + scriptName + ' [--version version] [--scope css-scope] [--outdir output-dir]\n';
                 
     function parseArgs(callback) {
         var args = process.argv.slice(2);
         var parsedArgs = {
-            version: "1.8.16"
+            version: "1.8.16",
+            outdir: './'
         };
         
         var scopeIdx = args.indexOf('--scope');
@@ -249,12 +248,20 @@
             args.splice(scopeIdx, 2);
         }
         
+        var outDirIdx = args.indexOf('--outdir');
+        if (outDirIdx !== -1) {
+            parsedArgs.outDir = args[outDirIdx + 1];
+            if (parsedArgs.outDir[parsedArgs.outDir.length - 1] !== '/') {
+                parsedArgs.outDir += '/';
+            }
+            args.splice(outDirIdx, 2);
+        }
+        
         var versionIdx = args.indexOf('--version');
         if (versionIdx !== -1) {
             parsedArgs.version = args[versionIdx + 1];
             args.splice(versionIdx, 2);
         }
-        
         
         if (args.some(function (a) {return a === '--help';})) {
             callback(new Error('Usage'));
