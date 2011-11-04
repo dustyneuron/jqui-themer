@@ -204,6 +204,22 @@
                 return newNode; 
             },
             
+            replaceWithNode: function (newNode) {
+                var treeNode = this;
+                var parentData = treeNode.findParent()._node;
+                                
+                var idx = parentData.indexOf(treeNode._node);
+                if (idx === -1) {
+                    throw new Error('could not find parent for node "' + treeNode.print() + '", ' + treeNode.printParentsInfo());
+                }
+                
+                newNode._parents = treeNode._parents.slice(0);
+                parentData[idx] = newNode._node;
+                treeNode._parents = [];
+                
+                return newNode; 
+            },
+
             remove: function () {
                 var treeNode = this;
                 var parentData = treeNode.findParent()._node;

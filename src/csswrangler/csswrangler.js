@@ -76,6 +76,16 @@
             });
             return treeNode;
         };
+        
+        this.forEachDeclaration = function (property, callback) {
+            this.findAll('property').
+                filter(function (p) { return p.print() === property; }).
+                forEach(function (p) {
+                    var value = p.findParent('declaration').findFirst('expression');
+                    callback(p, value);
+                });
+            return this;
+        };
     }
     CssNode.prototype = new treewrangler.Node;
     
@@ -141,6 +151,26 @@
     }
     Selector.prototype = new CssNode;
     
+    function Color (v) {
+        this.base = CssNode;
+        
+        var val = v;
+        if (/^#[_a-zA-Z0-9-]*$/.test(v)) {
+            v = {
+                type: 'hexcolor',
+                elements: [v]
+            };
+        }
+        var data = {
+            type: 'expression',
+            elements: [{
+                    type: 'term',
+                    elements: [v]
+                }]
+        };
+        this.base(data, []);
+    }
+    Color.prototype = new CssNode;
     
     function parse(str) {
         var rawNode;
@@ -156,5 +186,6 @@
     }
 
     exports.Selector = Selector;
+    exports.Color = Color;
     exports.parse = parse;
 })();
