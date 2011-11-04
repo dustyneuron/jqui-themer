@@ -242,7 +242,7 @@
         var args = process.argv.slice(2);
         var parsedArgs = {
             version: "1.8.16",
-            outdir: './'
+            outDir: './'
         };
         
         var scopeIdx = args.indexOf('--scope');
